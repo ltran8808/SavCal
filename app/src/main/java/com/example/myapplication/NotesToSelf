@@ -1,0 +1,12 @@
+//** THIS FILE IS TO MAKE NOTES FOR MYSELF TO
+KEEP TRACK OF PROPERTIES, FUNCTIONS, CLASSES
+AND ANYTHING THAT GOES INTO BUILDING THIS APP**//
+
+Aug 30th, 2025
+Having troubles with accessing state with variable appUIState in AppScreen>AppLayout
+Read section Pass the data in ViewModel and State in Compose Lesson for clues
+
+To Pass data, pass the ViewModel instance to the Screen class.
+
+Re-read ExposedDropdownMenu on this page https://alexzh.com/jetpack-compose-dropdownmenu/
+Re-read state hoisting to decide where to update timewindow value
