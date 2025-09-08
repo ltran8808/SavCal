@@ -27,6 +27,9 @@ class AppViewModel() : ViewModel() {
     var stateTimeWindow by mutableStateOf("0")
     private set
 
+    var stateTimeWindowUnit by mutableStateOf("Day(s)")
+    private set
+
     fun calculateSaving() : Double{
         savingAmount = stateWishToSaveAmount.toDouble() / stateTimeWindow.toDouble()
         return savingAmount
@@ -39,6 +42,10 @@ class AppViewModel() : ViewModel() {
 
     fun updateTimeWindow(timeWindow: String){
         stateTimeWindow = timeWindow
+    }
+
+    fun updateTimeWindowUnit(timeWindowUnit: String){
+        stateTimeWindowUnit = timeWindowUnit
     }
 
 

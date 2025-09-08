@@ -10,3 +10,7 @@ To Pass data, pass the ViewModel instance to the Screen class.
 
 Re-read ExposedDropdownMenu on this page https://alexzh.com/jetpack-compose-dropdownmenu/
 Re-read state hoisting to decide where to update timewindow value
+
+Sept 7, 2025
+Today issue is: ExposedDropdownMenu onValueChange must be updated or worked on. At the moment, the  ViewModel state for the property does not seem to be updated correcty.
+When configuration of the app is changed (screen rotation), the textfield value goes back to the default value (Day(s)).

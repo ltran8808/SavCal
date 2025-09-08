@@ -9,5 +9,6 @@ data class AppUIState(
 
 
     val savingAmount: Double = 0.0,
-    val timeWindowUnitArray: Array<String> = arrayOf<String>("Day(s)", "Week(s)", "Year(s)")
+    val timeWindowUnitArray: Array<String> = arrayOf<String>("Day(s)", "Week(s)", "Year(s)"),
+    val timeWindowUnit: String = timeWindowUnitArray[0]
 )
