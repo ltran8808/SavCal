@@ -82,6 +82,8 @@ fun AppScreen(
         onTimeWindowChanged = {appViewModel.updateTimeWindow(it)},
 //        timeWindow = appUIState.timeWindow,
         timeWindow = appViewModel.stateTimeWindow,
+        selectedTimeWindowUnitParam = appViewModel.stateTimeWindowUnit,
+        onTimeWindowUnitChangedParam = {appViewModel.updateTimeWindowUnit(it)},
         onSubmitButtonClicked = {appViewModel.calculateSaving()} //Potentially, this should not be taking
         //any input, appViewModel.calculateSaving(). The data is in the states that are written up to AppViewModel.
 
@@ -94,6 +96,8 @@ fun AppLayOut(
     wishToSaveAmount: String,
     onTimeWindowChanged: (String) -> Unit,
     timeWindow: String,
+    selectedTimeWindowUnitParam: String,
+    onTimeWindowUnitChangedParam: (String) -> Unit,
     onSubmitButtonClicked: () -> Unit,
 //    modifier : Modifier = Modifier
 ){
@@ -121,6 +125,8 @@ fun AppLayOut(
             timeWindow = timeWindow,
             timeWindowUnitArraysParam = arrayOf("Day(s)", "Week(s)", "Year(s)"),
             onTimeWindowChanged = onTimeWindowChanged,
+            selectedTimeWindowUnitParam = selectedTimeWindowUnitParam,
+            onTimeWindowUnitChangedParam = onTimeWindowUnitChangedParam
 
         )
 
@@ -153,8 +159,9 @@ fun TimeWindowLayout(
     expanded : Boolean,
     timeWindow: String,
     timeWindowUnitArraysParam: Array<String>,
-    selectedTimeWindowUnitParam: String = "Days",
+    selectedTimeWindowUnitParam: String,
     onTimeWindowChanged: (String) -> Unit,
+    onTimeWindowUnitChangedParam: (String) -> Unit
 //    modifier: Modifier = Modifier
 //    onClick: () -> Unit
 ){
@@ -179,13 +186,14 @@ fun TimeWindowLayout(
             onValueChange = onTimeWindowChanged,
             singleLine = true,
             modifier = Modifier
-                .defaultMinSize(16.dp)
-                .padding(end = 8.dp)
+                .width(120.dp)
+                .padding(end = 4.dp)
         )
 
         TimeWindowUnit_ExposedDropdownMenu(
             expanded = expanded,
             timeWindowUnitArraysParam = timeWindowUnitArraysParam,
+            onTimeWindowUnitChangedParam = onTimeWindowUnitChangedParam,
             selectedTimeWindowUnitParam = selectedTimeWindowUnitParam
         )
 
@@ -198,6 +206,7 @@ fun TimeWindowLayout(
 fun TimeWindowUnit_ExposedDropdownMenu(
     expanded : Boolean = false,
     timeWindowUnitArraysParam : Array<String>,
+    onTimeWindowUnitChangedParam: (String) -> Unit,
     selectedTimeWindowUnitParam : String
 ){
     //You need these properties here for the below functions to access the data
@@ -233,6 +242,7 @@ fun TimeWindowUnit_ExposedDropdownMenu(
                         text = {Text (text = timeWindowUnit)},
                         onClick = {
                             selectedTimeWindowUnit = timeWindowUnit
+                            onTimeWindowUnitChangedParam(timeWindowUnit)
                             expanded = false
                         }
                     )
