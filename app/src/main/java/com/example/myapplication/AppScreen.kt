@@ -47,6 +47,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -73,7 +74,9 @@ fun AppScreen(
     appViewModel: AppViewModel = viewModel()
 ){
     val appUIState by appViewModel.appUIState.collectAsState()
-    val savingAmount = appUIState.savingAmount
+    val savingAmount = appViewModel.viewModelSavingAmount
+    val wishToSaveAmount = appViewModel.stateWishToSaveAmount
+    val timeWindow = appViewModel.stateTimeWindow
 
     AppLayOut(
         onWishToSaveAmountChanged = {appViewModel.updateWishToSave(it)},
@@ -84,8 +87,10 @@ fun AppScreen(
         timeWindow = appViewModel.stateTimeWindow,
         selectedTimeWindowUnitParam = appViewModel.stateTimeWindowUnit,
         onTimeWindowUnitChangedParam = {appViewModel.updateTimeWindowUnit(it)},
-        onSubmitButtonClicked = {appViewModel.calculateSaving()} //Potentially, this should not be taking
-        //any input, appViewModel.calculateSaving(). The data is in the states that are written up to AppViewModel.
+        onSubmitButtonClick = {appViewModel.calculateSaving(wishToSaveAmount.toDouble(),timeWindow.toInt())},
+        savingAmount = savingAmount
+//        onSubmitButtonClicked = {appViewModel.calculateSaving()} //Potentially, this should not be taking
+//        //any input, appViewModel.calculateSaving(). The data is in the states that are written up to AppViewModel.
 
     )
 }
@@ -98,7 +103,9 @@ fun AppLayOut(
     timeWindow: String,
     selectedTimeWindowUnitParam: String,
     onTimeWindowUnitChangedParam: (String) -> Unit,
-    onSubmitButtonClicked: () -> Unit,
+    onSubmitButtonClick : () -> Unit,
+    savingAmount : Double,
+//    onSubmitButtonClicked: () -> Unit,
 //    modifier : Modifier = Modifier
 ){
 
@@ -132,9 +139,7 @@ fun AppLayOut(
 
         Button(
             onClick = {
-//                FinalResultDialog(
-//
-//                )
+                onSubmitButtonClick
             },
             modifier = Modifier
                 .padding(bottom = 8.dp)
@@ -149,6 +154,8 @@ fun AppLayOut(
         ) {
             Text(text="Reset")
         }
+
+        Text(savingAmount.toString())
 
     }
 }

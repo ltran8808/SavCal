@@ -18,7 +18,8 @@ class AppViewModel() : ViewModel() {
     val appUIState : StateFlow<AppUIState> = _appUIState.asStateFlow()
 
     //Display Random Scrambled Word in State and ViewModel Lession
-    private var savingAmount : Double = appUIState.value.savingAmount
+    var savingAmount : Double = appUIState.value.savingAmount
+    var viewModelSavingAmount : Double = 0.0
 
     //Passing and Receiving data from the AppScreen.kt (ViewModel and State in Compose>Architecting your
     //compose UI>Display the guess word
@@ -29,10 +30,14 @@ class AppViewModel() : ViewModel() {
     var stateTimeWindowUnit by mutableStateOf("Day(s)")
     private set
 
-    fun calculateSaving() : Double{
-        savingAmount = stateWishToSaveAmount.toDouble() / stateTimeWindow.toDouble()
-        return savingAmount
+
+    fun calculateSaving(wishToSaveAmount : Double, timeWindow : Int){
+//        viewModelSavingAmount = stateWishToSaveAmount.toDouble() / stateTimeWindow.toDouble()
+
+        viewModelSavingAmount = wishToSaveAmount / timeWindow
+
     }
+
 
     fun updateWishToSave(wishToSaveAmount: String){
         stateWishToSaveAmount = wishToSaveAmount

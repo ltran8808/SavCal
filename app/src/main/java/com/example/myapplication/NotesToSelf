@@ -10,3 +10,31 @@ To Pass data, pass the ViewModel instance to the Screen class.
 
 Re-read ExposedDropdownMenu on this page https://alexzh.com/jetpack-compose-dropdownmenu/
 Re-read state hoisting to decide where to update timewindow value
+
+Sept 9/13
+Tested and found that Submit button isn't working
+Potentially, the onSubmitButtonClick method isn't running.
+The method might have to take input data from AppScreen. However, that doesnt sound true.
+Because ViewModel should handle actions.
+
+
+**2. `Function2<Double, Int, Unit>` (The "Expected" Type)**
+
+*   **`Function2`**: This is a function that takes **two** arguments.
+*   **`<Double, Int, Unit>`**: This describes the parameters and the return type. The first two (`Double`, `Int`) are the types of the arguments the function must accept. The last one (`Unit`) is the return type.
+
+So, `Function2<Double, Int, Unit>` is a function that must be called with a `Double` value and an `Int` value as its arguments, and it returns nothing.
+
+**In lambda syntax, this looks like:**
+
+
+*   **Actual:** The lambda `{ println(...) }` takes zero parameters. Its type is `Function0<Unit>`.
+*   **Expected:** The `onRetry` parameter requires a lambda that takes a `Double` and an `Int`. Its type is `(Double, Int) -> Unit`, which is the same as `Function2<Double, Int, Unit>`.
+
+The compiler sees this mismatch and gives you the error: "actual type is 'Function0<Unit>', but 'Function2<Double, Int, Unit>' was expected."
+
+#### The Correct Code
+
+To fix it, you must provide a lambda that matches the expected signature. You must declare the two parameters.
+
+**Fix 1: Use the parameters**
