@@ -20,15 +20,19 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.safeDrawingPadding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.layout.wrapContentWidth
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.input.TextFieldLineLimits
 import androidx.compose.foundation.text.input.rememberTextFieldState
 import androidx.compose.foundation.text.input.setTextAndPlaceCursorAtEnd
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material3.AlertDialog
@@ -77,22 +81,52 @@ fun AppScreen(
     val savingAmount = appViewModel.viewModelSavingAmount
     val wishToSaveAmount = appViewModel.stateWishToSaveAmount
     val timeWindow = appViewModel.stateTimeWindow
-
-    AppLayOut(
-        onWishToSaveAmountChanged = {appViewModel.updateWishToSave(it)},
+    Column(
+        modifier = Modifier
+            .statusBarsPadding()
+            .verticalScroll(rememberScrollState())
+            .safeDrawingPadding()
+            .padding(16.dp),
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        AppLayOut(
+            onWishToSaveAmountChanged = { appViewModel.updateWishToSave(it) },
 //        wishToSaveAmount = appUIState.wishToSaveAmount,
-        wishToSaveAmount = appViewModel.stateWishToSaveAmount,
-        onTimeWindowChanged = {appViewModel.updateTimeWindow(it)},
+            wishToSaveAmount = appViewModel.stateWishToSaveAmount,
+            onTimeWindowChanged = { appViewModel.updateTimeWindow(it) },
 //        timeWindow = appUIState.timeWindow,
-        timeWindow = appViewModel.stateTimeWindow,
-        selectedTimeWindowUnitParam = appViewModel.stateTimeWindowUnit,
-        onTimeWindowUnitChangedParam = {appViewModel.updateTimeWindowUnit(it)},
-        onSubmitButtonClick = {appViewModel.calculateSaving(wishToSaveAmount.toDouble(),timeWindow.toInt())},
-        savingAmount = savingAmount
+            timeWindow = appViewModel.stateTimeWindow,
+            selectedTimeWindowUnitParam = appViewModel.stateTimeWindowUnit,
+            onTimeWindowUnitChangedParam = { appViewModel.updateTimeWindowUnit(it) },
+            onSubmitButtonClick = { appViewModel.calculateSaving() },
+            savingAmount = appViewModel.viewModelSavingAmount
 //        onSubmitButtonClicked = {appViewModel.calculateSaving()} //Potentially, this should not be taking
 //        //any input, appViewModel.calculateSaving(). The data is in the states that are written up to AppViewModel.
 
-    )
+        )
+
+        Button(
+            onClick = {
+                appViewModel.calculateSaving()
+                println("Submit Button clicked")
+            },
+            modifier = Modifier
+                .padding(bottom = 8.dp)
+        ) {
+            Text(text = "Submit")
+        }
+
+        Button(
+            onClick = {},
+            modifier = Modifier
+
+        ) {
+            Text(text = "Reset")
+        }
+
+        Text(savingAmount.toString())
+    }
 }
 
 @Composable
@@ -137,25 +171,7 @@ fun AppLayOut(
 
         )
 
-        Button(
-            onClick = {
-                onSubmitButtonClick
-            },
-            modifier = Modifier
-                .padding(bottom = 8.dp)
-        ) {
-            Text(text="Submit")
-        }
 
-        Button(
-            onClick = {},
-            modifier = Modifier
-
-        ) {
-            Text(text="Reset")
-        }
-
-        Text(savingAmount.toString())
 
     }
 }
