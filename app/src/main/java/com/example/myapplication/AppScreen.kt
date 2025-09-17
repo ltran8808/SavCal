@@ -73,25 +73,20 @@ fun AppScreen(
     // Pass the data section in State and ViewModel lesson
     appViewModel: AppViewModel = viewModel()
 ){
-    val appUIState by appViewModel.appUIState.collectAsState()
     val savingAmount = appViewModel.viewModelSavingAmount
-    val wishToSaveAmount = appViewModel.stateWishToSaveAmount
-    val timeWindow = appViewModel.stateTimeWindow
+    val stateWishToSaveAmount = appViewModel.stateWishToSaveAmount
+    val stateTimeWindow = appViewModel.stateTimeWindow
+
 
     AppLayOut(
         onWishToSaveAmountChanged = {appViewModel.updateWishToSave(it)},
-//        wishToSaveAmount = appUIState.wishToSaveAmount,
         wishToSaveAmount = appViewModel.stateWishToSaveAmount,
         onTimeWindowChanged = {appViewModel.updateTimeWindow(it)},
-//        timeWindow = appUIState.timeWindow,
         timeWindow = appViewModel.stateTimeWindow,
         selectedTimeWindowUnitParam = appViewModel.stateTimeWindowUnit,
         onTimeWindowUnitChangedParam = {appViewModel.updateTimeWindowUnit(it)},
-        onSubmitButtonClick = {appViewModel.calculateSaving(wishToSaveAmount.toDouble(),timeWindow.toInt())},
+        onSubmitButtonClick = {appViewModel.calculateSaving()},
         savingAmount = savingAmount
-//        onSubmitButtonClicked = {appViewModel.calculateSaving()} //Potentially, this should not be taking
-//        //any input, appViewModel.calculateSaving(). The data is in the states that are written up to AppViewModel.
-
     )
 }
 
@@ -139,7 +134,8 @@ fun AppLayOut(
 
         Button(
             onClick = {
-                onSubmitButtonClick
+                println("Submit Button Clicked")
+                onSubmitButtonClick()
             },
             modifier = Modifier
                 .padding(bottom = 8.dp)

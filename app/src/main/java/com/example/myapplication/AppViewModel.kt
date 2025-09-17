@@ -19,7 +19,9 @@ class AppViewModel() : ViewModel() {
 
     //Display Random Scrambled Word in State and ViewModel Lession
     var savingAmount : Double = appUIState.value.savingAmount
-    var viewModelSavingAmount : Double = 0.0
+
+    var viewModelSavingAmount by mutableStateOf(0.0)
+    private set
 
     //Passing and Receiving data from the AppScreen.kt (ViewModel and State in Compose>Architecting your
     //compose UI>Display the guess word
@@ -31,10 +33,10 @@ class AppViewModel() : ViewModel() {
     private set
 
 
-    fun calculateSaving(wishToSaveAmount : Double, timeWindow : Int){
-//        viewModelSavingAmount = stateWishToSaveAmount.toDouble() / stateTimeWindow.toDouble()
-
-        viewModelSavingAmount = wishToSaveAmount / timeWindow
+    fun calculateSaving(){
+        println("ViewModel calculateSaving() ran")
+        viewModelSavingAmount = stateWishToSaveAmount.toDouble() / stateTimeWindow.toDouble()
+//        viewModelSavingAmount = calculate(wishToSaveAmount, timeWindow)
 
     }
 
