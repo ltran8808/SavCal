@@ -1,6 +1,6 @@
 <resources>
     <string name="app_name">My Application</string>
-    <string name="alertdialogtext">You should save $1$d every $2$s in order to save up enough.</string>
+    <string name="alertdialogtext">You should save %1$s every %2$s in order to save up enough.</string>
     <string name="exit">Exit</string>
     <string name="cool">Cool</string>
     <string name="alert_dialog_title">Hello, Friend</string>

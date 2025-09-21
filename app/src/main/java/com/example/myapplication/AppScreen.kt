@@ -26,6 +26,8 @@ import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.text.input.InputTransformation.Companion.keyboardOptions
 import androidx.compose.foundation.text.input.TextFieldLineLimits
 import androidx.compose.foundation.text.input.rememberTextFieldState
 import androidx.compose.foundation.text.input.setTextAndPlaceCursorAtEnd
@@ -59,9 +61,13 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ModifierLocalBeyondBoundsLayout
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.LineHeightStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.myapplication.R.string
 
@@ -74,8 +80,7 @@ fun AppScreen(
     appViewModel: AppViewModel = viewModel()
 ){
     val savingAmount = appViewModel.viewModelSavingAmount
-    val stateWishToSaveAmount = appViewModel.stateWishToSaveAmount
-    val stateTimeWindow = appViewModel.stateTimeWindow
+
 
 
     AppLayOut(
@@ -86,8 +91,17 @@ fun AppScreen(
         selectedTimeWindowUnitParam = appViewModel.stateTimeWindowUnit,
         onTimeWindowUnitChangedParam = {appViewModel.updateTimeWindowUnit(it)},
         onSubmitButtonClick = {appViewModel.calculateSaving()},
-        savingAmount = savingAmount
+        onResetButtonClick = {appViewModel.reset()},
+        showDialog = {appViewModel.updateShowDialog()}
     )
+
+    if (appViewModel.stateShowDialog == true){
+        FinalResultDialog(
+            savingAmount = savingAmount,
+            timeWindowUnit = appViewModel.stateTimeWindowUnit,
+            onCoolButtonClick = {appViewModel.updateShowDialog()}
+        )
+    }
 }
 
 @Composable
@@ -99,9 +113,9 @@ fun AppLayOut(
     selectedTimeWindowUnitParam: String,
     onTimeWindowUnitChangedParam: (String) -> Unit,
     onSubmitButtonClick : () -> Unit,
-    savingAmount : Double,
-//    onSubmitButtonClicked: () -> Unit,
-//    modifier : Modifier = Modifier
+    onResetButtonClick : () -> Unit,
+    showDialog : () -> Unit
+
 ){
 
 
@@ -117,7 +131,12 @@ fun AppLayOut(
         TextField(
             value = wishToSaveAmount,
             onValueChange = onWishToSaveAmountChanged,
-            label={},
+            keyboardOptions = KeyboardOptions(
+                keyboardType = KeyboardType.Decimal,
+                imeAction = ImeAction.Done
+            ),
+            label={Text("Wish to Save Amount",
+                fontSize = 8.sp)},
             modifier = Modifier
             .padding(bottom = 16.dp),
         )
@@ -125,7 +144,7 @@ fun AppLayOut(
         TimeWindowLayout(
             expanded = false,
             timeWindow = timeWindow,
-            timeWindowUnitArraysParam = arrayOf("Day(s)", "Week(s)", "Year(s)"),
+            timeWindowUnitArraysParam = arrayOf("Day(s)", "Week(s)", "Month(s)", "Year(s)"),
             onTimeWindowChanged = onTimeWindowChanged,
             selectedTimeWindowUnitParam = selectedTimeWindowUnitParam,
             onTimeWindowUnitChangedParam = onTimeWindowUnitChangedParam
@@ -136,6 +155,7 @@ fun AppLayOut(
             onClick = {
                 println("Submit Button Clicked")
                 onSubmitButtonClick()
+                showDialog()
             },
             modifier = Modifier
                 .padding(bottom = 8.dp)
@@ -144,14 +164,14 @@ fun AppLayOut(
         }
 
         Button(
-            onClick = {},
+            onClick = {onResetButtonClick()},
             modifier = Modifier
 
         ) {
             Text(text="Reset")
         }
 
-        Text(savingAmount.toString())
+
 
     }
 }
@@ -165,13 +185,9 @@ fun TimeWindowLayout(
     selectedTimeWindowUnitParam: String,
     onTimeWindowChanged: (String) -> Unit,
     onTimeWindowUnitChangedParam: (String) -> Unit
-//    modifier: Modifier = Modifier
-//    onClick: () -> Unit
+
 ){
-//    var expanded by remember {mutableStateOf(expanded)}
-//    var timeWindow: String by remember { mutableStateOf(timeWindow) } (This is not needed. It is kept
-    //just for reminding myself where to it is important to put State in Driving from a Model Artchitect,
-    //the ViewModel)
+
 
 
 
@@ -187,7 +203,16 @@ fun TimeWindowLayout(
         TextField(
             value = timeWindow,
             onValueChange = onTimeWindowChanged,
+            keyboardOptions = KeyboardOptions(
+                keyboardType = KeyboardType.Number,
+                imeAction = ImeAction.Done
+            ),
             singleLine = true,
+            label = {Text (
+                "Saving Window",
+                fontSize = 8.sp
+            )},
+
             modifier = Modifier
                 .width(120.dp)
                 .padding(end = 4.dp)
@@ -265,43 +290,39 @@ fun AppPreview(){
 private fun FinalResultDialog(
     savingAmount: Double,
     timeWindowUnit: String,
+    onCoolButtonClick : () -> Unit,
     modifier : Modifier = Modifier
 ){
     val activity = LocalActivity.current as Activity
 
 
+    
     AlertDialog(
         onDismissRequest = {},
-        title = {Text(stringResource(string.alert_dialog_title))},
-        text = {Text(stringResource(string.alertdialogtext, savingAmount, timeWindowUnit))},
+        title = { Text(stringResource(string.alert_dialog_title)) },
+        text = { Text(stringResource(string.alertdialogtext, savingAmount.toString(), timeWindowUnit)) },
 
         modifier = modifier,
         dismissButton = {
             TextButton(
-                onClick= {
-                    activity.finish()
-                }
-            ){
-                Text(text = stringResource(string.exit))
-            }
-        },
-        confirmButton = {
-            TextButton(
                 onClick = {
-
+                        activity.finish()
+                    }
+                ) {
+                    Text(text = stringResource(string.exit))
                 }
-            ){
-                Text(text = stringResource(string.cool))
+            },
+            confirmButton = {
+                TextButton(
+                    onClick = {
+                        onCoolButtonClick()
+                    }
+                ) {
+                    Text(text = stringResource(string.cool))
+                }
             }
-        }
-    )
+        )
+
 }
 
-//@Preview
-//@Composable
-//fun FinalResultDialogPreview(){
-//    FinalResultDialog(
-//        savingAmount = 48.8,
-//        timeWindowUnit = "Days"
-//    )
-//}
+

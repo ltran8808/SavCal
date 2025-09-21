@@ -15,19 +15,22 @@ class AppViewModel() : ViewModel() {
 
     //Backing Property Section in State and ViewModel Lession
     private val _appUIState : MutableStateFlow<AppUIState> = MutableStateFlow(AppUIState())
-    val appUIState : StateFlow<AppUIState> = _appUIState.asStateFlow()
+//    val appUIState : StateFlow<AppUIState> = _appUIState.asStateFlow()
 
-    //Display Random Scrambled Word in State and ViewModel Lession
-    var savingAmount : Double = appUIState.value.savingAmount
+    //Display Random Scrambled Word in State and ViewModel Lesson
+
 
     var viewModelSavingAmount by mutableStateOf(0.0)
     private set
 
+    var stateShowDialog by mutableStateOf(false)
+    private set
+
     //Passing and Receiving data from the AppScreen.kt (ViewModel and State in Compose>Architecting your
     //compose UI>Display the guess word
-    var stateWishToSaveAmount by mutableStateOf("0.0")
+    var stateWishToSaveAmount by mutableStateOf("")
     private set
-    var stateTimeWindow by mutableStateOf("0")
+    var stateTimeWindow by mutableStateOf("")
     private set
     var stateTimeWindowUnit by mutableStateOf("Day(s)")
     private set
@@ -36,7 +39,7 @@ class AppViewModel() : ViewModel() {
     fun calculateSaving(){
         println("ViewModel calculateSaving() ran")
         viewModelSavingAmount = stateWishToSaveAmount.toDouble() / stateTimeWindow.toDouble()
-//        viewModelSavingAmount = calculate(wishToSaveAmount, timeWindow)
+
 
     }
 
@@ -52,6 +55,20 @@ class AppViewModel() : ViewModel() {
 
     fun updateTimeWindowUnit(timeWindowUnit: String){
         stateTimeWindowUnit = timeWindowUnit
+    }
+
+    fun updateShowDialog(){
+        if(stateShowDialog == true) {
+            stateShowDialog = false
+        }else{
+            stateShowDialog = true
+        }
+    }
+
+    fun reset(){
+        stateWishToSaveAmount = ""
+        stateTimeWindow = ""
+        stateTimeWindowUnit = "Day(s)"
     }
 
 
