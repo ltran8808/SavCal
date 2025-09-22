@@ -135,7 +135,8 @@ fun AppLayOut(
                 keyboardType = KeyboardType.Decimal,
                 imeAction = ImeAction.Done
             ),
-            label={Text("Wish to Save Amount",
+            label={Text(
+                stringResource(string.wish_to_save_amount),
                 fontSize = 8.sp)},
             modifier = Modifier
             .padding(bottom = 16.dp),
@@ -153,14 +154,13 @@ fun AppLayOut(
 
         Button(
             onClick = {
-                println("Submit Button Clicked")
                 onSubmitButtonClick()
                 showDialog()
             },
             modifier = Modifier
                 .padding(bottom = 8.dp)
         ) {
-            Text(text="Submit")
+            Text(text= stringResource(string.submit))
         }
 
         Button(
@@ -168,7 +168,7 @@ fun AppLayOut(
             modifier = Modifier
 
         ) {
-            Text(text="Reset")
+            Text(text= stringResource(string.reset))
         }
 
 
@@ -209,7 +209,7 @@ fun TimeWindowLayout(
             ),
             singleLine = true,
             label = {Text (
-                "Saving Window",
+                stringResource(string.saving_window),
                 fontSize = 8.sp
             )},
 

@@ -4,4 +4,9 @@
     <string name="exit">Exit</string>
     <string name="cool">Cool</string>
     <string name="alert_dialog_title">Hello, Friend</string>
+    <string name="wish_to_save_amount">Wish to Save Amount</string>
+    <string name="submit_button_clicked">Submit Button Clicked</string>
+    <string name="submit">Submit</string>
+    <string name="reset">Reset</string>
+    <string name="saving_window">Saving Window</string>
 </resources>
