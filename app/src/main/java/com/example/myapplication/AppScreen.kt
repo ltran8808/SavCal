@@ -189,9 +189,6 @@ fun TimeWindowLayout(
 ){
 
 
-
-
-
     Row(
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.SpaceEvenly,
