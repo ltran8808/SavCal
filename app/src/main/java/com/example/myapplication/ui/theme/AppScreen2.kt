@@ -25,22 +25,22 @@ fun AppScreen2(
 ){
     AppScreen2Layout(
         viewModelIncome = appViewModel.stateIncome,
-        viewModelOnIncomeChanged = appViewModel.updateIncome(),
+        viewModelOnIncomeChanged = {appViewModel.updateIncome(it)},
         viewModelNumberOfBills = appViewModel.stateNumberOfBills,
-        viewModelOnNumberOfBillsChanged = appViewModel.updateNumberOfBills(),
+        viewModelOnNumberOfBillsChanged = {appViewModel.updateNumberOfBills(it)},
         viewModelSavingGoal = appViewModel.stateSavingGoal,
-        viewModelOnSavingGoalChanged = appViewModel.updateSavingGoal()
+        viewModelOnSavingGoalChanged = {appViewModel.updateSavingGoal(it)}
     )
 }
 
 @Composable
 fun AppScreen2Layout(
     viewModelIncome: String,
-    viewModelOnIncomeChanged: () -> Unit,
+    viewModelOnIncomeChanged: (String) -> Unit,
     viewModelNumberOfBills: String,
-    viewModelOnNumberOfBillsChanged: () -> Unit,
+    viewModelOnNumberOfBillsChanged: (String) -> Unit,
     viewModelSavingGoal: String,
-    viewModelOnSavingGoalChanged: () -> Unit
+    viewModelOnSavingGoalChanged: (String) -> Unit
 ){
     Column(
         modifier = Modifier
@@ -78,11 +78,11 @@ fun AppScreen2Layout(
 @Composable
 fun InputFields(
     income: String,
-    onIncomeChanged: () -> Unit,
+    onIncomeChanged: (String) -> Unit,
     numberOfBills: String,
-    onNumberOfBillsChanged: () -> Unit,
+    onNumberOfBillsChanged: (String) -> Unit,
     savingGoal: String,
-    onSavingGoalChanged: () -> Unit
+    onSavingGoalChanged: (String) -> Unit
 ){
     Column(
         verticalArrangement = Arrangement.Center,
@@ -91,7 +91,7 @@ fun InputFields(
         TextField(
             value = income,
             onValueChange = {
-                onIncomeChanged()
+                onIncomeChanged
             },
             label = {Text("Income",
                 fontSize = 8.sp)}
@@ -100,7 +100,7 @@ fun InputFields(
         TextField(
             value = numberOfBills,
             onValueChange = {
-                onNumberOfBillsChanged()
+                onNumberOfBillsChanged
             },
             label = {Text("Number of Bills",
                 fontSize = 8.sp)}
@@ -109,7 +109,7 @@ fun InputFields(
         TextField(
             value = savingGoal,
             onValueChange = {
-                onSavingGoalChanged()
+                onSavingGoalChanged
             },
             label = {Text("Saving Goal",
                 fontSize = 8.sp)}

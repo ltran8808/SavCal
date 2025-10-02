@@ -13,6 +13,13 @@ import kotlin.properties.Delegates
 
 class AppViewModel() : ViewModel() {
 
+    var stateSavingGoal by mutableStateOf("")
+    private set
+    var stateNumberOfBills by mutableStateOf("")
+    private set
+    var stateIncome by mutableStateOf("")
+    private set
+
     //Backing Property Section in State and ViewModel Lession
     private val _appUIState : MutableStateFlow<AppUIState> = MutableStateFlow(AppUIState())
 //    val appUIState : StateFlow<AppUIState> = _appUIState.asStateFlow()
@@ -69,6 +76,18 @@ class AppViewModel() : ViewModel() {
         stateWishToSaveAmount = ""
         stateTimeWindow = ""
         stateTimeWindowUnit = "Day(s)"
+    }
+
+    fun updateIncome(income: String){
+        stateIncome = income
+    }
+
+    fun updateNumberOfBills(numberOfBills: String) {
+        stateNumberOfBills = numberOfBills
+    }
+
+    fun updateSavingGoal(savingGoal: String) {
+        stateSavingGoal = savingGoal
     }
 
 
